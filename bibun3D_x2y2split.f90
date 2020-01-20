@@ -9,7 +9,7 @@ call mpi_comm_size(mpi_comm_world,nprocs,mpij)
 call mpi_comm_rank(mpi_comm_world,myrank,mpij)
 
 
-allocate(f(0:nxmax+1,0:nymax+1,0:nzmax+1),!g(nxmax,nymax,nzmax))
+allocate(f(0:nxmax+1,0:nymax+1,0:nzmax+1),g(0:nxmax+1,0:nymax+1,0:nzmax+1))
 
 open(10,file='data1.txt',form='formatted')
 
@@ -70,7 +70,7 @@ stime=mpi_wtime()
     do iz=1,nzmax
       do iy=nymax/2,nymax
         do ix=nxmax/2,nxmax
-        
+
           g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
         end do
       end do

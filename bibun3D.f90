@@ -8,7 +8,7 @@ call mpi_init(mpij)
 call mpi_comm_size(mpi_comm_world,nprocs,mpij)
 call mpi_comm_rank(mpi_comm_world,myrank,mpij)
 
-allocate(f(nxmax,nymax,nzmax),g(nxmax,nymax,nzmax))
+allocate(f(0:nxmax+1,0:nymax+1,0:nzmax+1),g(0:nxmax+1,0:nymax+1,0:nzmax+1))
 
 open(10,file='data1.txt',form='formatted')
 
