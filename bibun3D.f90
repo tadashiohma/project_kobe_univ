@@ -37,9 +37,9 @@ stime=mpi_wtime()
   dzinv=1.0d0/dz/dz
 
   do k=1,30
-    do iz=2,nzmax-1
-      do iy=2,nymax-1
-        do ix=2,nxmax-1
+    do iz=2,nzmax
+      do iy=2,nymax
+        do ix=2,nxmax
           g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
         end do
       end do

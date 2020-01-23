@@ -38,39 +38,36 @@ stime=mpi_wtime()
   dzinv=1.0d0/dz/dz
 
   do k=1,30
-
-!2<ix<nxmax/2-1,2<iy<nymax/2-1
     do iz=1,nzmax
-      do iy=1,nymax/2
-        do ix=1,nxmax/2
+      do iy=1,nymax/4
+        do ix=1,nxmax
           g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
         end do
       end do
     end do
 
-!nxmax/2<ix<nxmax-1,2<iy<nymax/2-1
+
     do iz=1,nzmax
-      do iy=1,nymax/2
-        do ix=nxmax/2+1,nxmax
+      do iy=nymax/4+1,nymax/2
+        do ix=1,nxmax
           g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
         end do
       end do
     end do
 
-!2<ix<nxmax/2-1,nymax/2<iy<nymax-1
+
     do iz=1,nzmax
-      do iy=nymax/2,nymax
-        do ix=1,nxmax/2
+      do iy=nymax/2+1,3*nymax/4
+        do ix=1,nxmax
           g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
         end do
       end do
     end do
 
-!nxmax/2<ix<nxmax-1,nymax/2<iy<nymax-1
-    do iz=1,nzmax
-      do iy=nymax/2,nymax
-        do ix=nxmax/2+1,nxmax
 
+    do iz=1,nzmax
+      do iy=3*nymax/4+1,nymax
+        do ix=1,nxmax
           g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
         end do
       end do
