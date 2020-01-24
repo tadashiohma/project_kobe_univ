@@ -1,12 +1,11 @@
+program main
+use omp_lib
 implicit none
-include 'mpif.h'
+
 integer i,j,k,ix,iy,iz,mpij,myrank,nprocs
-integer, parameter :: nxmax=256,nymax=256,nzmax=256
+integer, parameter :: nxmax=1024,nymax=1024,nzmax=1024
 real*8 ::x,y,z,dx,dy,dz,dxinv,dyinv,dzinv,y1,stime,etime
 real*8, allocatable ::f(:,:,:),g(:,:,:)
-call mpi_init(mpij)
-call mpi_comm_size(mpi_comm_world,nprocs,mpij)
-call mpi_comm_rank(mpi_comm_world,myrank,mpij)
 
 
 allocate(f(0:nxmax+1,0:nymax+1,0:nzmax+1),g(0:nxmax+1,0:nymax+1,0:nzmax+1))
@@ -29,7 +28,7 @@ do iz=0,nzmax+1
 end do
 
 
-stime=mpi_wtime()
+stime=omp_get_wtime()
   dx=0.1d0
   dy=0.11d0
   dz=0.12d0
@@ -37,7 +36,7 @@ stime=mpi_wtime()
   dyinv=1.0d0/dy/dy
   dzinv=1.0d0/dz/dz
 
-  do k=1,30
+  do k=1,10
     do iz=1,nzmax
       do iy=1,nymax/4
         do ix=1,nxmax
@@ -73,15 +72,15 @@ stime=mpi_wtime()
       end do
     end do
 
-
-
   end do
-etime=mpi_wtime()
-write(6,*) etime-stime,14.0d0*nxmax*nymax*nzmax*30.0d0/(etime-stime)/1.0E9
+
+etime=omp_get_wtime()
+
+write(6,*) etime-stime
+write(6,*) 14.0d0*nxmax*nymax*nzmax*10.0d0/(etime-stime)/1.0E9
 
 
 close(10)
 
-call mpi_finalize(mpij)
 stop
 end
