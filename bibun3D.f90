@@ -1,5 +1,8 @@
+program main
+use omp_lib
 implicit none
-include 'mpif.h'
+!include 'mpif.h'
+
 integer i,j,k,ix,iy,iz,mpij,myrank,nprocs
 integer, parameter :: nxmax=256,nymax=256,nzmax=256
 real*8 ::x,y,z,dx,dy,dz,dxinv,dyinv,dzinv,y1,stime,etime
@@ -28,7 +31,7 @@ do iz=1,nzmax
 end do
 
 
-stime=mpi_wtime()
+stime=omp_get_wtime()
   dx=0.1d0
   dy=0.11d0
   dz=0.12d0
@@ -47,11 +50,12 @@ stime=mpi_wtime()
   end do
 
 
-etime=mpi_wtime()
+etime=omp_get_wtime()
 write(6,*) etime-stime,14.0d0*nxmax*nymax*nzmax*30.0d0/(etime-stime)/1.0E9
 
 close(10)
 
 call mpi_finalize(mpij)
 stop
-end
+end program main
+
