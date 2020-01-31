@@ -37,7 +37,7 @@ stime=omp_get_wtime()
 
   do k=1,10
     do iz=1,nzmax
-      do iy=1,nymax/4
+      do iy=1,nymax/2
         do ix=1,nxmax
           g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
         end do
@@ -46,30 +46,13 @@ stime=omp_get_wtime()
 
 
     do iz=1,nzmax
-      do iy=nymax/4+1,nymax/2
+      do iy=nymax/2+1,nymax
         do ix=1,nxmax
           g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
         end do
       end do
     end do
 
-
-    do iz=1,nzmax
-      do iy=nymax/2+1,3*nymax/4
-        do ix=1,nxmax
-          g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
-        end do
-      end do
-    end do
-
-
-    do iz=1,nzmax
-      do iy=3*nymax/4+1,nymax
-        do ix=1,nxmax
-          g(ix,iy,iz)=g(ix,iy,iz)+(f(ix+1,iy,iz)-2.0d0*f(ix,iy,iz)+f(ix-1,iy,iz))*dxinv+(f(ix,iy+1,iz)-2.0d0*f(ix,iy,iz)+f(ix,iy-1,iz))*dyinv+(f(ix,iy,iz+1)-2.0d0*f(ix,iy,iz)+f(ix,iy,iz-1))*dzinv
-        end do
-      end do
-    end do
 
   end do
 
