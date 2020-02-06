@@ -11,7 +11,7 @@
 ### parallel文
 
 ```
-!$omp parallel default(shared) private(k, ix, iy, iz) reduction(+:g)
+!$omp parallel default(shared) private(k, ix, iy, iz) 
   do k=1,10
     中略
   end do

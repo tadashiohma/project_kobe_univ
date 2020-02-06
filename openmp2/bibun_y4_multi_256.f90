@@ -3,14 +3,12 @@ use omp_lib
 implicit none
 
 integer i,j,k,ix,iy,iz,mpij,myrank,nprocs
-integer, parameter :: nxmax=128,nymax=128,nzmax=128
+integer, parameter :: nxmax=256,nymax=256,nzmax=256,nkmax=625
 real*8 ::x,y,z,dx,dy,dz,dxinv,dyinv,dzinv,y1,stime,etime
 real*8, allocatable ::f(:,:,:),g(:,:,:)
 integer :: num_thread
 
 allocate(f(0:nxmax+1,0:nymax+1,0:nzmax+1),g(0:nxmax+1,0:nymax+1,0:nzmax+1))
-
-open(10,file='data1.txt',form='formatted')
 
 do iz=0,nzmax+1
   do iy=0,nymax+1
@@ -34,11 +32,17 @@ end do
   dxinv=1.0d0/dx/dx
   dyinv=1.0d0/dy/dy
   dzinv=1.0d0/dz/dz
-  stime=omp_get_wtime()
 
-!$omp parallel default(shared) private(k, ix, iy, iz) 
-  do k=1,10
-    !$omp do collapse(2) 
+!$omp parallel default(firstprivate) private(k,ix,iy,iz) shared(f, g, stime, etime)
+!$omp single
+  write(6,*) "# Number of Threads:", omp_get_num_threads()
+!$omp end single
+!$omp single
+  stime=omp_get_wtime()
+!$omp end single
+
+  do k=1,nkmax
+    !$omp do collapse(2) schedule(static) 
     do iz=1,nzmax
       do iy=1,nymax/4
         do ix=1,nxmax
@@ -51,7 +55,7 @@ end do
     end do
     !$omp end do
 
-    !$omp do collapse(2) 
+    !$omp do collapse(2) schedule(static) 
     do iz=1,nzmax
       do iy=nymax/4+1,nymax/2
         do ix=1,nxmax
@@ -65,7 +69,7 @@ end do
     !$omp end do
 
 
-    !$omp do collapse(2) 
+    !$omp do collapse(2) schedule(static)
     do iz=1,nzmax
       do iy=nymax/2+1,3*nymax/4
         do ix=1,nxmax
@@ -78,7 +82,7 @@ end do
     end do
     !$omp end do
 
-    !$omp do collapse(2) 
+    !$omp do collapse(2) schedule(static)
     do iz=1,nzmax
       do iy=3*nymax/4+1,nymax
         do ix=1,nxmax
@@ -91,23 +95,20 @@ end do
     end do
     !$omp end do
   end do
+
+  !$omp barrier
+  
+  !$omp single
+  etime=omp_get_wtime()
+  !$omp end single
+
 !$omp end parallel
 
-etime=omp_get_wtime()
+write(6,*) sum(g), "# Checksum"
+write(6,*) (etime-stime), "# Total Time [sec]"
+write(6,*) (etime-stime) / nkmax * 1.0E3, "# Single Time [msec]"
+write(6,*) 14.0d0*nxmax*nymax*nzmax*nkmax/(etime-stime)/1.0E9, "# Performance [GFlops]"
 
-!$omp parallel
-!$omp single
-write(6,*) "# Number of Threads:", omp_get_num_threads()
-!$omp end single
-!$omp end parallel
-
-write(6,*) etime-stime
-write(6,*) 14.0d0*nxmax*nymax*nzmax*10.0d0/(etime-stime)/1.0E9
-
-
-
-
-close(10)
 
 stop
 end
