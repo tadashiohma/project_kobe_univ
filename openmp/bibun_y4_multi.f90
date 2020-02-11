@@ -3,7 +3,7 @@ use omp_lib
 implicit none
 
 integer i,j,k,ix,iy,iz,mpij,myrank,nprocs
-integer, parameter :: nxmax=128,nymax=128,nzmax=128
+integer, parameter :: nxmax=128,nymax=128,nzmax=128 !nxmax,nymax,nzmaxで問題サイズを指定している
 real*8 ::x,y,z,dx,dy,dz,dxinv,dyinv,dzinv,y1,stime,etime
 real*8, allocatable ::f(:,:,:),g(:,:,:)
 integer :: num_thread
@@ -37,7 +37,7 @@ end do
   stime=omp_get_wtime()
 
 !$omp parallel default(shared) private(k, ix, iy, iz) 
-  do k=1,10
+  do k=1,50
     !$omp do collapse(2) 
     do iz=1,nzmax
       do iy=1,nymax/4
@@ -102,7 +102,7 @@ write(6,*) "# Number of Threads:", omp_get_num_threads()
 !$omp end parallel
 
 write(6,*) etime-stime
-write(6,*) 14.0d0*nxmax*nymax*nzmax*10.0d0/(etime-stime)/1.0E9
+write(6,*) 14.0d0*nxmax*nymax*nzmax*50.0d0/(etime-stime)/1.0E9
 
 
 
