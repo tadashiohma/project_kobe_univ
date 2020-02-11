@@ -3,7 +3,7 @@ use omp_lib
 implicit none
 
 integer i,j,k,ix,iy,iz,mpij,myrank,nprocs
-integer, parameter :: nxmax=1024,nymax=1024,nzmax=1024
+integer, parameter :: nxmax=1024,nymax=1024,nzmax=1024 !nxmax,nymax,nzmaxで問題サイズを指定している
 real*8 ::x,y,z,dx,dy,dz,dxinv,dyinv,dzinv,y1,stime,etime
 real*8, allocatable ::f(:,:,:),g(:,:,:)
 
