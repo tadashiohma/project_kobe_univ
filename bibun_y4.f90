@@ -3,7 +3,7 @@ use omp_lib
 implicit none
 
 integer i,j,k,ix,iy,iz,mpij,myrank,nprocs
-integer, parameter :: nxmax=1024,nymax=1024,nzmax=1024
+integer, parameter :: nxmax=1024,nymax=1024,nzmax=1024 !!nxmax,nymax,nzmaxで問題サイズを指定している
 real*8 ::x,y,z,dx,dy,dz,dxinv,dyinv,dzinv,y1,stime,etime
 real*8, allocatable ::f(:,:,:),g(:,:,:)
 
@@ -35,7 +35,7 @@ stime=omp_get_wtime()
   dyinv=1.0d0/dy/dy
   dzinv=1.0d0/dz/dz
 
-  do k=1,10
+  do k=1,50
     do iz=1,nzmax
       do iy=1,nymax/4
         do ix=1,nxmax
@@ -76,7 +76,7 @@ stime=omp_get_wtime()
 etime=omp_get_wtime()
 
 write(6,*) etime-stime
-write(6,*) 14.0d0*nxmax*nymax*nzmax*10.0d0/(etime-stime)/1.0E9
+write(6,*) 14.0d0*nxmax*nymax*nzmax*50.0d0/(etime-stime)/1.0E9
 
 
 close(10)
